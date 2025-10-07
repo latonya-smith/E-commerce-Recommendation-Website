@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecommerce Recommendation System</title>
+    <link rel="stylesheet" href="../static/css/index.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="navbar-brand">Ecommerce Recommendation System</div>
+    <ul class="navbar-nav">
+        <li><a href="index" class="nav-link"><span>Home</span></a></li>
+        <li><a href="#" id="settingsLink" class="nav-link">Settings</a></li>
+        <li><a href="#" id="signupBtn" class="nav-link btn">Sign Up</a></li>
+        <li><a href="#" id="signinBtn" class="nav-link btn primary">Sign In</a></li>
+    </ul>
+</nav>
+
+<!-- Video -->
+<div class="video-container">
+    <video class="video-background" autoplay loop muted>
+        <source src="static/v.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+
+<!-- Go To Main Page Button -->
+<div class="text-center">
+    <a href="main" class="btn btn-primary go-main-btn">Go To Main Page</a>
+</div>
+
+<!-- Flask signup message -->
+{% if signup_message %}
+<h5 class="signup-message">{{signup_message}}</h5>
+{% endif %}
+
+<!-- Trending Products -->
+<div class="container">
+    <h2>Trending Products</h2>
+    <div class="products-grid">
+        {% for index, product in trending_products.iterrows() %}
+        <div class="product-card">
+            <img src="{{ random_product_image_urls[index] }}" alt="{{ product['Name'] }}">
+            <h5>{{ truncate(product['Name'],12) }}</h5>
+            <p>Brand: {{ product['Brand'] }}</p>
+            <button class="buyBtn" data-index="{{ index }}">Buy Now</button>
+        </div>
+
+        <!-- Product Modal -->
+        <div id="productModal{{ index }}" class="modal">
+            <div class="modal-content">
+                <span class="close" data-close="productModal{{ index }}">&times;</span>
+                <div class="modal-body">
+                    <img src="{{ random_product_image_urls[index] }}" alt="{{ product['Name'] }}">
+                    <p><strong>Brand:</strong> {{ product['Brand'] }}</p>
+                    <p><strong>Review Count:</strong> {{ product['ReviewCount'] }}</p>
+                    <p><strong>Rating:</strong> {{ product['Rating'] }}</p>
+                    <p><strong>Price:</strong> {{ random_price }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-close="productModal{{ index }}">Close</button>
+                    <button class="btn primary">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Sign Up Modal -->
+<div id="signupModal" class="modal">
+    <div class="modal-content">
+        <span class="close" data-close="signupModal">&times;</span>
+        <h3>Sign Up</h3>
+        <form action="/signup" method="post">
+            <input type="text" placeholder="Username" name="username" required>
+            <input type="email" placeholder="Email" name="email" required>
+            <input type="password" placeholder="Password" name="password" required>
+            <button type="submit" class="btn primary">Sign Up</button>
+        </form>
+    </div>
+</div>
+
+<!-- Sign In Modal -->
+<div id="signinModal" class="modal">
+    <div class="modal-content">
+        <span class="close" data-close="signinModal">&times;</span>
+        <h3>Sign In</h3>
+        <form action="/signin" method="post">
+            <input type="text" placeholder="Username" name="signinUsername" required>
+            <input type="password" placeholder="Password" name="signinPassword" required>
+            <button type="submit" class="btn primary">Sign In</button>
+        </form>
+    </div>
+</div>
+
+<!-- Settings Modal -->
+<div id="settingsModal" class="modal">
+    <div class="modal-content">
+        <span class="close" data-close="settingsModal">&times;</span>
+        <h3>Settings</h3>
+        <div>
+            <label><input type="radio" name="theme" value="default" checked> Default</label>
+            <label><input type="radio" name="theme" value="black"> Black</label>
+            <label><input type="radio" name="theme" value="green"> Green</label>
+        </div>
+        <div class="zoom-buttons">
+            <button id="zoomIn" class="btn">Zoom In</button>
+            <button id="zoomOut" class="btn">Zoom Out</button>
+        </div>
+        <button id="applyTheme" class="btn primary">Apply</button>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-container">
+        <div>
+            <h5>About Us</h5>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        <div>
+            <h5>Quick Links</h5>
+            <ul>
+                <li><a href="index">Home</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+        </div>
+        <div>
+            <h5>Support</h5>
+            <ul>
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Terms of Service</a></li>
+            </ul>
+        </div>
+        <div>
+            <h5>Contact Us</h5>
+            <p>123 Street, City</p>
+            <p>Phone: +1234567890</p>
+            <p>Email: info@example.com</p>
+        </div>
+    </div>
+</footer>
+
+<script src="../static/js/index.js"></script>
+</body>
+</html>

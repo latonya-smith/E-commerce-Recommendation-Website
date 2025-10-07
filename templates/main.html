@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Main Page</title>
+<link rel="stylesheet" href="../static/css/main.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="navbar-brand">Ecommerce Recommendation System</div>
+    <ul class="navbar-nav">
+        <li><a href="index" class="nav-link">Home</a></li>
+        <li><a href="#" id="settingsLink" class="nav-link">Settings</a></li>
+        <li><a href="#" id="signupBtn" class="nav-link btn">Sign Up</a></li>
+        <li><a href="#" id="signinBtn" class="nav-link btn primary">Sign In</a></li>
+    </ul>
+</nav>
+
+<!-- Search Bar -->
+<div class="search-container">
+    <form action="/recommendations" method="post">
+        <input type="text" name="prod" placeholder="Search for products...">
+        <input type="number" name="nbr" placeholder="Number of products..." style="width:100px;">
+        <button type="submit" class="btn primary">Search</button>
+    </form>
+</div>
+
+{% if message %}
+<h5 class="signup-message">{{message}}</h5>
+{% endif %}
+
+<!-- Recommended Products -->
+{% if not content_based_recs.empty %}
+<div class="container">
+    <h2>Recommended Products</h2>
+    <div class="products-grid">
+        {% for index, product in content_based_recs.iterrows() %}
+        <div class="product-card">
+            <img src="{{ product['ImageURL'] }}" alt="{{ product['Name'] }}">
+            <h5>{{ truncate(product['Name'],12) }}</h5>
+            <p>Brand: {{ product['Brand'] }}</p>
+            <button class="buyBtn" data-index="{{ index }}">Buy Now</button>
+        </div>
+
+        <!-- Product Modal -->
+        <div id="productModal{{ index }}" class="modal">
+            <div class="modal-content">
+                <span class="close" data-close="productModal{{ index }}">&times;</span>
+                <div class="modal-body">
+                    <img src="{{ product['ImageURL'] }}" alt="{{ product['Name'] }}">
+                    <p><strong>Brand:</strong> {{ product['Brand'] }}</p>
+                    <p><strong>Review Count:</strong> {{ product['ReviewCount'] }}</p>
+                    <p><strong>Rating:</strong> {{ product['Rating'] }}</p>
+                    <p><strong>Price:</strong> {{ random_price }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-close="productModal{{ index }}">Close</button>
+                    <button class="btn primary">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Reuse modals: signup, signin, settings as in index.html -->
+
+<footer>
+    <div class="footer-container">
+        <div>
+            <h5>About Us</h5><p>Lorem ipsum dolor sit amet.</p>
+        </div>
+        <div>
+            <h5>Quick Links</h5><ul><li><a href="index">Home</a></li></ul>
+        </div>
+        <div>
+            <h5>Support</h5><ul><li><a href="#">FAQ</a></li></ul>
+        </div>
+        <div>
+            <h5>Contact Us</h5><p>123 Street, City</p><p>Phone: +1234567890</p>
+        </div>
+    </div>
+</footer>
+
+<script src="../static/js/main.js"></script>
+</body>
+</html>
